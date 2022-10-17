@@ -71,7 +71,6 @@ namespace HUD_project
             TakeDamage(50);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
-            Console.ReadKey();
 
             //Showcases Sheild damage over flowing into health
             Console.WriteLine("Showcasing sheild damage over flowing into health");
@@ -82,7 +81,6 @@ namespace HUD_project
             TakeDamage(150);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
-            Console.ReadKey();
 
             //Showcases losing a life
             Console.WriteLine("Showcasing losing a life");
@@ -93,7 +91,6 @@ namespace HUD_project
             TakeDamage(200);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
-            Console.ReadKey();
 
             // Showcasing Player losing all lives
             Console.WriteLine("Showcasing getting a game over");
@@ -116,9 +113,31 @@ namespace HUD_project
             TakeDamage(200);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
-            Console.ReadKey();
 
-            //
+            //show caseing shield regeneration
+            Console.WriteLine("Showcasing shield regeneration");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(50);
+            ShowHUD();
+            RegenerateShield(25);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //Showcase's shield regeneration seperate from health regeneration
+            Console.WriteLine("Showcasing shield regenerating seperate from health");
+            Console.WriteLine();
+            Console.ReadKey();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(150);
+            ShowHUD();
+            RegenerateShield(75);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            Console.ReadKey();
         }
         //Sets player name
         static void DeterminPlayerName()
@@ -139,7 +158,7 @@ namespace HUD_project
             }
             DebugMenu();
         }
-        static void RegenerateSheild(int regenerateAmount)
+        static void RegenerateShield(int regenerateAmount)
         {
             Console.WriteLine("shield will be regenarated by " + regenerateAmount + " points!");
             if (regenerateAmount > 0)
@@ -155,6 +174,7 @@ namespace HUD_project
                 Console.WriteLine("Error! " + regenerateAmount + " is not a valid regenaration value! Player can not regenarate negative sheild");
             }
             Console.WriteLine("Player regenarates " + regenerateAmount + " points of shield");
+            Console.WriteLine("");
         }
         //damages player
         static void TakeDamage(int damage)

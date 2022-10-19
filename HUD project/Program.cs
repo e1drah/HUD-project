@@ -10,7 +10,7 @@ namespace HUD_project
     {
 
         //player stats
-        static string playerName = "PlayerName";
+        static string playerName = "PlayerNameDefault";
         static int health;
         static int maxHealth;
         static int shield;
@@ -20,6 +20,10 @@ namespace HUD_project
         static int playerDamage;
         static int xp;
         static int xpToNextLevel;
+        static int lvl;
+
+        static float lvlUpModifier;
+
         //monster stats
         static int MonsterHealth;
         static int MonsterDamage;
@@ -36,7 +40,9 @@ namespace HUD_project
             lives = 3;
             maxLives = 99;
             playerDamage = 10;
-
+            xp = 0;
+            lvl = 1;
+            lvlUpModifier = 1.5f;
             Showcase();
             
         }
@@ -129,12 +135,122 @@ namespace HUD_project
             //Showcase's shield regeneration seperate from health regeneration
             Console.WriteLine("Showcasing shield regenerating seperate from health");
             Console.WriteLine();
-            Console.ReadKey();
+            Reset();
             Console.WriteLine("------------------------------------------------------------------------------------------");
             ShowHUD();
             TakeDamage(150);
             ShowHUD();
             RegenerateShield(75);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //Showcase's shield regeneration beyond the max amount
+            Console.WriteLine("Showcasing an attempt to regenerate shield beyond the max amount");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(75);
+            ShowHUD();
+            RegenerateShield(125);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //Showcase's error when an attempt to regenerate a negitive value
+            Console.WriteLine("Showcasing an attempt to regenerate shield by a negitive value");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(75);
+            ShowHUD();
+            RegenerateShield(-75);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's heal method
+            Console.WriteLine("Showcasing Heal method");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(175);
+            ShowHUD();
+            Heal(75);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's an attempt to heal over the max amount
+            Console.WriteLine("Showcasing 'over heal'");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(175);
+            ShowHUD();
+            Heal(100);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's error message when trying to heal by a negitive value
+            Console.WriteLine("Showcasing error message when trying to heal by a negitive value'");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            TakeDamage(175);
+            ShowHUD();
+            Heal(-75);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showing XpGain method 
+            Console.WriteLine("Showcasing xp gain");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            XpGain(500);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's error message when trying to gain negitive Xp
+            Console.WriteLine("Showcasing error message when trying to gain negitive Xp");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            XpGain(-500);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's leveling up
+            Console.WriteLine("Showcasing leveling up");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            XpGain(1000);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's 'XP overflow' when leveling up
+            Console.WriteLine("Showcasing 'XP overflow' when leveling up");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            XpGain(1500);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+
+            //showcase's 'XP overflow' into next Lvl when leveling up
+            Console.WriteLine("Showcasing 'XP overflow' into next Lvl when leveling up");
+            Console.WriteLine();
+            Reset();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            ShowHUD();
+            XpGain(2500);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
             Console.ReadKey();
@@ -151,13 +267,25 @@ namespace HUD_project
         //heals player
         static void Heal(int healAmount)
         {
-            health += healAmount;
-            if (health > 100)
+            Console.WriteLine("Player is about to be healed by " + healAmount+"!");
+            if (healAmount >= 0)
             {
-                health = 100;
+                health += healAmount;
+
+                if (health > 100)
+                {
+                    health = maxHealth;
+                    Console.WriteLine("Player at max health!");
+                }
+                Console.WriteLine("Player is healed by " + healAmount+"!");
             }
-            DebugMenu();
+            else
+            {
+                Console.WriteLine("Error! " + healAmount + " is not a valid heal value! Player cannot be healed by a negitive value!");
+            }
+            Console.WriteLine();
         }
+        //regenerates Shield
         static void RegenerateShield(int regenerateAmount)
         {
             Console.WriteLine("shield will be regenarated by " + regenerateAmount + " points!");
@@ -167,14 +295,15 @@ namespace HUD_project
                 if (shield > maxShield)
                 {
                     shield = maxShield;
+                    Console.WriteLine("Player at max shield");
                 }
+                Console.WriteLine("Player regenarates " + regenerateAmount + " points of shield");
             }
             else
             {
-                Console.WriteLine("Error! " + regenerateAmount + " is not a valid regenaration value! Player can not regenarate negative sheild");
+                Console.WriteLine("Error! " + regenerateAmount + " is not a valid regenaration value! Player can not regenarate negative value");
             }
-            Console.WriteLine("Player regenarates " + regenerateAmount + " points of shield");
-            Console.WriteLine("");
+            Console.WriteLine();
         }
         //damages player
         static void TakeDamage(int damage)
@@ -218,6 +347,47 @@ namespace HUD_project
                 lives -= 1;
             }
         }
+        static void XpGain(int xpValue)
+        {
+            Console.WriteLine("player will reecive " + xpValue + " expariance!");
+            if (xpValue > 0)
+            {
+                Console.WriteLine("Player gains " + xpValue + " expariance");
+                xp += xpValue;
+                if (xp >= xpToNextLevel)
+                {
+                    LevelUp(xp);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error! " + xpValue + " is not a valid value! Player cannot gain negitive experiance");
+            }
+            Console.WriteLine();
+        }
+        static void LevelUp(int xpOverflow)
+        {
+            int xpToNextLvlOld = xpToNextLevel;
+            Console.WriteLine("Player levels up!");
+
+            //
+
+            xpOverflow -= xpToNextLevel;
+
+            maxHealth = (int)Math.Round(maxHealth * lvlUpModifier);
+            health = maxHealth;
+            maxShield = (int)Math.Round(maxShield * lvlUpModifier);
+            shield = maxShield;
+            xpToNextLevel = (int)Math.Round(xpToNextLevel * lvlUpModifier);
+            playerDamage = (int)Math.Round(playerDamage * lvlUpModifier);
+            xp = xpOverflow;
+            lvl += 1;
+
+            if (xp >= xpToNextLevel)
+            {
+                LevelUp(xp);
+            }
+        }
         static void Reset()
         {
             Console.WriteLine("Reseting varibles");
@@ -230,11 +400,13 @@ namespace HUD_project
             lives = 3;
             maxLives = 99;
             playerDamage = 10;
+            xp = 0;
+            lvl = 1;
         }
         //Shows HUD
         static void ShowHUD()
         {
-            Console.WriteLine(playerName + " Health: " + health + @"/" + maxHealth + " Shield: " + shield + @"/" + maxShield + " Lives: " + lives + " XP: "+ xp + @"/" + xpToNextLevel +" " + playerName + "'s Attack: " + playerDamage);
+            Console.WriteLine(playerName +" lvl: " + lvl + " Health: " + health + @"/" + maxHealth + " Shield: " + shield + @"/" + maxShield + " Lives: " + lives + " XP: "+ xp + @"/" + xpToNextLevel + " Attack: " + playerDamage);
             Console.WriteLine();
         }
 

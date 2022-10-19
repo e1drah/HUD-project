@@ -24,10 +24,12 @@ namespace HUD_project
 
         static float lvlUpModifier;
 
+        static string healthStatusString;
+
         //monster stats
-        static int MonsterHealth;
-        static int MonsterDamage;
-        static int MonsterSheild;
+        //static int MonsterHealth;
+        //static int MonsterDamage;
+        //static int MonsterSheild;
 
         static void Main(string[] args)
         {
@@ -43,8 +45,9 @@ namespace HUD_project
             xp = 0;
             lvl = 1;
             lvlUpModifier = 1.5f;
+            HealthStatus();
             Showcase();
-            
+
         }
         //Debug menu to test methods
         static void DebugMenu()
@@ -72,7 +75,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing shield taking damage");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(50);
             ShowHUD();
@@ -82,7 +85,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing sheild damage over flowing into health");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(150);
             ShowHUD();
@@ -92,7 +95,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing losing a life");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(200);
             ShowHUD();
@@ -102,6 +105,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing getting a game over");
             Console.WriteLine();
             Reset();
+
             Console.WriteLine("------------------------------------------------------------------------------------------");
             ShowHUD();
             TakeDamage(200);
@@ -124,7 +128,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing shield regeneration");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(50);
             ShowHUD();
@@ -136,7 +140,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing shield regenerating seperate from health");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(150);
             ShowHUD();
@@ -148,7 +152,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing an attempt to regenerate shield beyond the max amount");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(75);
             ShowHUD();
@@ -160,7 +164,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing an attempt to regenerate shield by a negitive value");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(75);
             ShowHUD();
@@ -172,7 +176,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing Heal method");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(175);
             ShowHUD();
@@ -184,7 +188,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing 'over heal'");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(175);
             ShowHUD();
@@ -196,7 +200,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing error message when trying to heal by a negitive value'");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             TakeDamage(175);
             ShowHUD();
@@ -208,7 +212,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing xp gain");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             XpGain(500);
             ShowHUD();
@@ -218,7 +222,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing error message when trying to gain negitive Xp");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             XpGain(-500);
             ShowHUD();
@@ -228,7 +232,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing leveling up");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             XpGain(1000);
             ShowHUD();
@@ -238,7 +242,7 @@ namespace HUD_project
             Console.WriteLine("Showcasing 'XP overflow' when leveling up");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             XpGain(1500);
             ShowHUD();
@@ -248,12 +252,15 @@ namespace HUD_project
             Console.WriteLine("Showcasing 'XP overflow' into next Lvl when leveling up");
             Console.WriteLine();
             Reset();
-            Console.WriteLine("------------------------------------------------------------------------------------------");
+
             ShowHUD();
             XpGain(2500);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
             Console.ReadKey();
+
+            //
+
         }
         //Sets player name
         static void DeterminPlayerName()
@@ -267,7 +274,7 @@ namespace HUD_project
         //heals player
         static void Heal(int healAmount)
         {
-            Console.WriteLine("Player is about to be healed by " + healAmount+"!");
+            Console.WriteLine("Player is about to be healed by " + healAmount + "!");
             if (healAmount >= 0)
             {
                 health += healAmount;
@@ -277,13 +284,43 @@ namespace HUD_project
                     health = maxHealth;
                     Console.WriteLine("Player at max health!");
                 }
-                Console.WriteLine("Player is healed by " + healAmount+"!");
+                Console.WriteLine("Player is healed by " + healAmount + "!");
             }
             else
             {
                 Console.WriteLine("Error! " + healAmount + " is not a valid heal value! Player cannot be healed by a negitive value!");
             }
             Console.WriteLine();
+            HealthStatus();
+        }
+
+        static void HealthStatus()
+        {
+
+            if (health <= 0)
+            {
+                healthStatusString = "DEAD!";
+            }
+            else if ((health > 0) && (health <= 25))
+            {
+                healthStatusString = "BARLY HOLDING ON!";
+            }
+            else if ((health > 25) && (health <= 50))
+            {
+                healthStatusString = "STILL KICKING!";
+            }
+            else if ((health > 50) && (health <= 75))
+            {
+                healthStatusString = "ROUGHED UP!";
+            }
+            else if ((health > 75) && (health < 100))
+            {
+                healthStatusString = "FINE!";
+            }
+            else if (health >= 100)
+            {
+                healthStatusString = "IN PERFECT HEALTH";
+            }
         }
         //regenerates Shield
         static void RegenerateShield(int regenerateAmount)
@@ -332,6 +369,7 @@ namespace HUD_project
                 Console.WriteLine(playerName + " takes " + damage + " damages");
             }
             Console.WriteLine();
+            HealthStatus();
         }
         //Takes away a life if player still has lives
         static void LoseALife()
@@ -407,6 +445,7 @@ namespace HUD_project
         static void ShowHUD()
         {
             Console.WriteLine(playerName +" lvl: " + lvl + " Health: " + health + @"/" + maxHealth + " Shield: " + shield + @"/" + maxShield + " Lives: " + lives + " XP: "+ xp + @"/" + xpToNextLevel + " Attack: " + playerDamage);
+            Console.WriteLine("You are " + healthStatusString);
             Console.WriteLine();
         }
 

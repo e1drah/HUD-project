@@ -142,7 +142,7 @@ namespace HUD_project
             Reset();
 
             ShowHUD();
-            TakeDamage(150);
+            TakeDamage(175);
             ShowHUD();
             RegenerateShield(75);
             ShowHUD();
@@ -257,10 +257,53 @@ namespace HUD_project
             XpGain(2500);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
-            Console.ReadKey();
 
             //
+            Console.WriteLine("Health status state 'PERFECT HEALTH'");
+            Console.WriteLine();
+            Reset();
 
+            ShowHUD();
+            
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            //
+            Console.WriteLine("Health status state 'FINE'");
+            Console.WriteLine();
+            Reset();
+
+            ShowHUD();
+            TakeDamage(120);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            //
+            Console.WriteLine("Health status state 'ROUGHED UP'");
+            Console.WriteLine();
+            Reset();
+
+            ShowHUD();
+            TakeDamage(130);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            //
+            Console.WriteLine("Health status state 'STILL KICKING'");
+            Console.WriteLine();
+            Reset();
+
+            ShowHUD();
+            TakeDamage(160);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            //
+            Console.WriteLine("Health status state 'BARELY HOLDING ON'");
+            Console.WriteLine();
+            Reset();
+
+            ShowHUD();
+            TakeDamage(180);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            Console.ReadKey();
         }
         //Sets player name
         static void DeterminPlayerName()
@@ -301,23 +344,27 @@ namespace HUD_project
             {
                 healthStatusString = "DEAD!";
             }
-            else if ((health > 0) && (health <= 25))
+            if ((health <= 25) && (health > 0))
             {
-                healthStatusString = "BARLY HOLDING ON!";
+                healthStatusString = "BARELY HOLDING ON!";
             }
-            else if ((health > 25) && (health <= 50))
+            if (health == 25)
+            {
+                Console.WriteLine("help");
+            }
+            if ((health > 25) && (health <= 50))
             {
                 healthStatusString = "STILL KICKING!";
             }
-            else if ((health > 50) && (health <= 75))
+            if ((health > 50) && (health <= 75))
             {
                 healthStatusString = "ROUGHED UP!";
             }
-            else if ((health > 75) && (health < 100))
+            if ((health > 75) && (health < 100))
             {
                 healthStatusString = "FINE!";
             }
-            else if (health >= 100)
+            if (health >= 100)
             {
                 healthStatusString = "IN PERFECT HEALTH";
             }
@@ -408,7 +455,7 @@ namespace HUD_project
             int xpToNextLvlOld = xpToNextLevel;
             Console.WriteLine("Player levels up!");
 
-            //
+            
 
             xpOverflow -= xpToNextLevel;
 
@@ -444,6 +491,8 @@ namespace HUD_project
         //Shows HUD
         static void ShowHUD()
         {
+            // running this method in ShowHUD is the only way it works corectly and I have no idea why
+            HealthStatus();
             Console.WriteLine(playerName +" lvl: " + lvl + " Health: " + health + @"/" + maxHealth + " Shield: " + shield + @"/" + maxShield + " Lives: " + lives + " XP: "+ xp + @"/" + xpToNextLevel + " Attack: " + playerDamage);
             Console.WriteLine("You are " + healthStatusString);
             Console.WriteLine();

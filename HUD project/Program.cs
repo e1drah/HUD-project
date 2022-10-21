@@ -303,7 +303,21 @@ namespace HUD_project
             TakeDamage(180);
             ShowHUD();
             Console.WriteLine("------------------------------------------------------------------------------------------");
+            //
+            Console.WriteLine("Extra life gained");
+            Console.WriteLine();
+            Reset();
+            ExtraLife(1);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            Console.WriteLine("Player has received more than max lives");
+            Console.WriteLine();
+            Reset();
+            ExtraLife(200);
+            ShowHUD();
+            Console.WriteLine("------------------------------------------------------------------------------------------");
             Console.ReadKey();
+
         }
         //Sets player name
         static void DeterminPlayerName()
@@ -472,6 +486,22 @@ namespace HUD_project
             {
                 LevelUp(xp);
             }
+        }
+        static void ExtraLife(int extraLivesAmount)
+        {
+            Console.WriteLine("Player lives is about to go up by " + extraLivesAmount);
+            
+            lives += extraLivesAmount;
+
+            if (lives >= maxLives)
+            {
+                lives = maxLives;
+                Console.WriteLine("Player has reached max lives");
+                Console.WriteLine();
+                return;
+            }
+            Console.WriteLine("Player lives has gone up by " + extraLivesAmount);
+            Console.WriteLine();
         }
         static void Reset()
         {
